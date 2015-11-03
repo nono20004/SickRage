@@ -860,9 +860,9 @@ def get_absolute_number_from_season_and_episode(show, season, episode):
 
         if len(sqlResults) == 1:
             absolute_number = int(sqlResults[0]["absolute_number"])
-            logger.log("Found absolute number %s for show %s S%02dE%02d" % (absolute_number, show.name, season, episode), logger.DEBUG)
+            logger.log(u"Found absolute number %s for show %s S%02dE%02d" % (absolute_number, show.name, season, episode), logger.DEBUG)
         else:
-            logger.log("No entries for absolute number for show %s S%02dE%02d" % (show.name, season, episode), logger.DEBUG)
+            logger.log(u"No entries for absolute number for show %s S%02dE%02d" % (show.name, season, episode), logger.DEBUG)
 
     return absolute_number
 
@@ -1306,7 +1306,7 @@ def set_up_anidb_connection():
         return False
 
     if not sickbeard.ADBA_CONNECTION:
-        anidb_logger = lambda x: logger.log("anidb: %s " % x, logger.DEBUG)
+        anidb_logger = lambda x: logger.log(u"anidb: %s " % x, logger.DEBUG)
         try:
             sickbeard.ADBA_CONNECTION = adba.Connection(keepAlive=True, log=anidb_logger)
         except Exception as e:
@@ -1565,7 +1565,7 @@ def _setUpSession(session, headers):
 
     # request session proxies
     if not 'Referer' in session.headers and sickbeard.PROXY_SETTING:
-        logger.log("Using proxy: " + sickbeard.PROXY_SETTING, logger.DEBUG)
+        logger.log(u"Using proxy: " + sickbeard.PROXY_SETTING, logger.DEBUG)
         scheme, address = urllib2.splittype(sickbeard.PROXY_SETTING)
         address = sickbeard.PROXY_SETTING if scheme else 'http://' + sickbeard.PROXY_SETTING
         session.proxies = {
@@ -1789,7 +1789,7 @@ def verify_freespace(src, dest, oldfile=None):
     if not isinstance(oldfile, list):
         oldfile = [oldfile]
 
-    logger.log("Trying to determine free space on destination drive", logger.DEBUG)
+    logger.log(u"Trying to determine free space on destination drive", logger.DEBUG)
 
     if hasattr(os, 'statvfs'):  # POSIX
         def disk_usage(path):
@@ -1809,21 +1809,21 @@ def verify_freespace(src, dest, oldfile=None):
                 fun = ctypes.windll.kernel32.GetDiskFreeSpaceExA
             ret = fun(path, ctypes.byref(_), ctypes.byref(total), ctypes.byref(free))
             if ret == 0:
-                logger.log("Unable to determine free space, something went wrong", logger.WARNING)
+                logger.log(u"Unable to determine free space, something went wrong", logger.WARNING)
                 raise ctypes.WinError()
             return free.value
     else:
-        logger.log("Unable to determine free space on your OS")
+        logger.log(u"Unable to determine free space on your OS")
         return True
 
     if not ek(os.path.isfile, src):
-        logger.log("A path to a file is required for the source. " + src + " is not a file.", logger.WARNING)
+        logger.log(u"A path to a file is required for the source. " + src + " is not a file.", logger.WARNING)
         return True
 
     try:
         diskfree = disk_usage(dest)
     except Exception:
-        logger.log("Unable to determine free space, so I will assume there is enough.", logger.WARNING)
+        logger.log(u"Unable to determine free space, so I will assume there is enough.", logger.WARNING)
         return True
 
     neededspace = ek(os.path.getsize, src)
@@ -1836,7 +1836,7 @@ def verify_freespace(src, dest, oldfile=None):
     if diskfree > neededspace:
         return True
     else:
-        logger.log("Not enough free space: Needed: %s bytes ( %s ), found: %s bytes ( %s )"
+        logger.log(u"Not enough free space: Needed: %s bytes ( %s ), found: %s bytes ( %s )"
                    % (neededspace, pretty_filesize(neededspace), diskfree, pretty_filesize(diskfree)), logger.WARNING)
         return False
 

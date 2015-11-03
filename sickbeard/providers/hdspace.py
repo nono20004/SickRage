@@ -108,7 +108,7 @@ class HDSpaceProvider(generic.TorrentProvider):
 
                 data = self.getURL(searchURL)
                 if not data or 'please try later' in data:
-                    logger.log("No data returned from provider", logger.DEBUG)
+                    logger.log(u"No data returned from provider", logger.DEBUG)
                     continue
 
                 # Search result page contains some invalid html that prevents html parser from returning all data.
@@ -123,7 +123,7 @@ class HDSpaceProvider(generic.TorrentProvider):
 
                 html = BeautifulSoup(data[index:], 'html5lib')
                 if not html:
-                    logger.log("No html data parsed from provider", logger.DEBUG)
+                    logger.log(u"No html data parsed from provider", logger.DEBUG)
                     continue
 
                 torrents = html.findAll('tr')

@@ -169,12 +169,12 @@ class GenericProvider:
                     torrent_hash = b16encode(b32decode(torrent_hash)).upper()
 
                 if not torrent_hash:
-                    logger.log("Unable to extract torrent hash from magnet: " + ex(result.url), logger.ERROR)
+                    logger.log(u"Unable to extract torrent hash from magnet: " + ex(result.url), logger.ERROR)
                     return urls, filename
 
                 urls = [x.format(torrent_hash=torrent_hash, torrent_name=torrent_name) for x in self.btCacheURLS]
             except:
-                logger.log("Unable to extract torrent hash or name from magnet: " + ex(result.url), logger.ERROR)
+                logger.log(u"Unable to extract torrent hash or name from magnet: " + ex(result.url), logger.ERROR)
                 return urls, filename
         else:
             urls = [result.url]
